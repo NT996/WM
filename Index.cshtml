@@ -1,0 +1,60 @@
+﻿@model IEnumerable<Project.Models.Product>
+@{
+    ViewBag.Title = "Random";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Products</h2>
+<p>
+    @Html.ActionLink("New Product", "New", "Products", null, new { @class = "btn btn-primary" })
+</p>
+@if (!Model.Any())
+{
+    <p>Nemamo nijedan proizvod u bazi.</p>
+}
+else
+{
+    <table id="products" class="table table-bordered table-hover">
+        <!--Dodajemo ID u tabelu-->
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Delete</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var products in Model)
+            {
+                <tr>
+                    <td>@Html.ActionLink(products.Name, "Edit", "Products", new { Id = products.ID }, null)</td>
+                    <td>@products.Price</td>
+                    <!--Dodajemo dugme koje na osnovu ID brise proizvod iz baze, i dole na dnu dodajemo skriptu za brisanje-->
+                    <td><button data-product-id="@products.ID" class="btn btn-link js-delete">DELETE</button></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+<!--Dodajemo Delete link na svakom posebnom proizvodu i kada korisnik klikne na taj link koristice se jQuery da pozove API i na taj nacin ce se obrisati proizvod iz baze-->
+@section scripts
+{
+    @*Dodajemo skript tag*@
+    <script>
+        $(document).ready(function () {
+            $(".js-delete").on("click", function () {
+                var button = $(this);
+                if (confirm("Da li ste sigurni da zelite da obrisete proizvod iz baze?")) {
+                    $.ajax({
+                        url: "/api/products/" + $(this).attr("data-product-id"),
+                        method: "DELETE",
+                        success: function () {
+                            alert("Proizvod je uspesno obrisan.");
+                            button.parents("tr").remove();
+                        }
+                    })
+                };
+            });
+        });
+    </script>
+}

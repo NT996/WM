@@ -1,0 +1,38 @@
+﻿@model Project.ViewModels.ProductFormViewModel
+@{
+    ViewBag.Title = "ProductForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New product</h2>
+@using (Html.BeginForm("Save", "Products"))
+{
+    <div class="form-group">
+        @Html.LabelFor(n => n.Product.Name)
+        @Html.TextBoxFor(n => n.Product.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(n => n.Product.Name)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(n => n.Product.Description)
+        @Html.TextBoxFor(n => n.Product.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(n => n.Product.Description)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(n => n.Product.Producer)
+        @Html.TextBoxFor(n => n.Product.Producer, new { @class = "form-control" })
+        @Html.ValidationMessageFor(n => n.Product.Producer)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(n => n.Product.Supplier)
+        @Html.TextBoxFor(n => n.Product.Supplier, new { @class = "form-control" })
+        @Html.ValidationMessageFor(n => n.Product.Supplier)
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(n => n.Product.Price)
+        @Html.TextBoxFor(n => n.Product.Price, new { @class = "form-control" })
+        @Html.ValidationMessageFor(n => n.Product.Price)
+    </div>
+    @Html.HiddenFor(n => n.Product.ID)
+    <button type="submit" class="btn btn-default">Save</button>
+}
+
